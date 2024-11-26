@@ -64,8 +64,9 @@ async function analyzeCode(
 
   for (const file of parsedDiff) {
     if (file.to === "/dev/null") continue; // Ignore deleted files
+    const fileContent = readFileSync(String(file.to), 'utf-8')
     for (const chunk of file.chunks) {
-      const prompt = createPrompt(file, chunk, prDetails);
+      const prompt = createPrompt(file, fileContent, chunk, prDetails);
       console.log("Prompt: "+prompt)
       const aiResponse = await getAIResponse(prompt);
       if (aiResponse) {
@@ -79,7 +80,7 @@ async function analyzeCode(
   return comments;
 }
 
-function createPrompt(file: File, chunk: Chunk, prDetails: PRDetails): string {
+function createPrompt(file: File, fileContent: string, chunk: Chunk, prDetails: PRDetails): string {
   return `Your task is to review pull requests. Instructions:
 - Provide the response in following JSON format:  {"reviews": [{"lineNumber":  <line_number>, "reviewComment": "<review comment>"}]}
 - Do not give positive comments or compliments.
@@ -111,7 +112,7 @@ ${chunk.changes
 
 File new content:
 \`\`\`
-${file.to}
+${fileContent}
 \`\`\`
 `;
 }
