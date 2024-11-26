@@ -85,6 +85,7 @@ function createPrompt(file: File, fileContent: string, chunk: Chunk, prDetails: 
 - Provide the response in following JSON format:  {"reviews": [{"lineNumber":  <line_number>, "reviewComment": "<review comment>"}]}
 - Do not give positive comments or compliments.
 - Provide comments and suggestions ONLY if there is something to improve, otherwise "reviews" should be an empty array.
+- Provide comments and suggestions ONLY about diff, not on the rest of the codebase.
 - Write the comment in GitHub Markdown format.
 - Use the given description only for the overall context and only comment the code.
 - IMPORTANT: NEVER suggest adding comments to the code.
@@ -110,7 +111,7 @@ ${chunk.changes
   .join("\n")}
 \`\`\`
 
-File new content:
+File new content as context:
 \`\`\`
 ${fileContent}
 \`\`\`
