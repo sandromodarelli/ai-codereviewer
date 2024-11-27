@@ -84,11 +84,15 @@ function createPrompt(file: File, fileContent: string, chunk: Chunk, prDetails: 
   return `Your task is to review pull requests. Instructions:
 - Provide the response in following JSON format:  {"reviews": [{"lineNumber":  <line_number>, "reviewComment": "<review comment>"}]}
 - Do not give positive comments or compliments.
+- Do not review or comment on the unmodified parts of the code. Use the unmodified source code solely as context to understand the changes better.
 - Provide comments and suggestions ONLY if there is something to improve, otherwise "reviews" should be an empty array.
 - Provide comments and suggestions ONLY about diff, not on the rest of the codebase.
 - Write the comment in GitHub Markdown format.
 - Use the given description only for the overall context and only comment the code.
 - IMPORTANT: NEVER suggest adding comments to the code.
+- Use the unchanged parts of the source code **only** to better understand the context and implications of the changes.
+- Avoid commenting on the unmodified code or suggesting changes unrelated to the diff.
+- **Reminder**: Focus solely on the provided code diff when making comments.
 
 Review the following code diff in the file "${
     file.to
